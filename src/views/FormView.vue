@@ -210,26 +210,38 @@ function hydrateForm(data) {
 
   // Top-level pole
   if (data.pivniVedeni !== undefined) s.pivniVedeni = data.pivniVedeni
-  if (data.kofola) s.kofola = data.kofola
-  if (data.kofola_poznamka) s.kofola_poznamka = data.kofola_poznamka
-  if (data.demontaz_poznamky) s.demontaz_poznamky = data.demontaz_poznamky
+  if (data.kofola) s.kofola = Array.isArray(data.kofola) ? data.kofola : []
+  if (data.kofola_poznamka !== undefined) s.kofola_poznamka = data.kofola_poznamka
+  if (data.demontaz_poznamky !== undefined) s.demontaz_poznamky = data.demontaz_poznamky
 
-  // Dynamické sekce
+  // Dynamické sekce - načtení položek
   const types = ['plakety', 'chl', 'chl_pris', 'vh_hlavy', 'spojky', 'kohouty', 'narazec', 'odkapniky', 'plyn', 'hadice_python', 'sanitace', 'vh_prisl', 'drzaky_desky', 'izolace', 'pulty', 'ostatni']
   types.forEach(type => {
+    // Reset sekce
+    s.sections[type] = []
+
+    // Načti data
+    let items = []
     if (Array.isArray(data[type])) {
-      s.sections[type] = data[type].map(item => ({
-        value: item.value ?? item.code ?? '',
-        qty: item.qty ?? item.count ?? 1
-      }))
+      items = data[type]
     } else if (data.sections && Array.isArray(data.sections[type])) {
-      s.sections[type] = data.sections[type]
+      items = data.sections[type]
     }
 
-    // Notes
+    // Naplň sekci
+    s.sections[type] = items.map(item => ({
+      value: item.value ?? item.code ?? '',
+      qty: item.qty ?? item.count ?? 1
+    }))
+
+    // Načti poznámku pro tuto sekci
+    s.notes[type] = ''
     const noteKey = 'pozn_' + type
-    if (data[noteKey]) s.notes[type] = data[noteKey]
-    else if (data.notes && data.notes[type]) s.notes[type] = data.notes[type]
+    if (data[noteKey] !== undefined) {
+      s.notes[type] = data[noteKey]
+    } else if (data.notes && data.notes[type] !== undefined) {
+      s.notes[type] = data.notes[type]
+    }
   })
 }
 

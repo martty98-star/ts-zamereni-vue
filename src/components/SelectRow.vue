@@ -1,6 +1,10 @@
 <template>
   <div class="row dynamic-row">
     <div class="select-filter-wrap">
+      <select v-model="model.value">
+        <option value="">— vyber položku —</option>
+        <option v-for="o in filteredOptions" :key="o.value" :value="o.value">{{ o.text }}</option>
+      </select>
       <input
         v-model="filterQuery"
         class="select-filter"
@@ -11,12 +15,8 @@
         <button type="button" class="select-filter-reset" @click="resetFilter">Zrušit filtr</button>
         <span class="select-filter-count">{{ filteredOptions.length }}/{{ options.length }} položek</span>
       </div>
-      <select v-model="model.value">
-        <option value="">— vyber položku —</option>
-        <option v-for="o in filteredOptions" :key="o.value" :value="o.value">{{ o.text }}</option>
-      </select>
     </div>
-    <input type="number" min="0" v-model.number="model.qty" />
+    <input type="number" min="0" v-model.number="model.qty" class="qty-input" />
     <button type="button" class="icon-btn" @click="$emit('delete')">🗑</button>
   </div>
 </template>
