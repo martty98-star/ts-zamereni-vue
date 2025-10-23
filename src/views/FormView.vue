@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { state as s, touch } from '../store/formState'
 import { OPTIONS } from '../options'
 import { sendToPA } from '../utils/exporters'
@@ -111,6 +111,13 @@ import DynamicSection from '../components/DynamicSection.vue'
 import SelectRow from '../components/SelectRow.vue'
 
 const jsonInput = ref(null)
+
+// Ensure vh_hlavy has at least one empty row on mount
+onMounted(() => {
+  if (!s.sections.vh_hlavy || s.sections.vh_hlavy.length === 0) {
+    s.sections.vh_hlavy = [{ value: '', qty: 1 }]
+  }
+})
 
 // Auto-fill spojky podle počtu pivních vedení
 const spojkyTabulka = {
