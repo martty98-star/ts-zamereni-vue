@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <h2>{{ title }}</h2>
-    <div>
+    <div class="rows">
       <SelectRow
         v-for="(row, i) in list"
         :key="i"
@@ -13,6 +13,11 @@
     <div class="controls">
       <button class="primary" type="button" @click="add">+ Přidat položku</button>
     </div>
+    <textarea
+      class="note-field"
+      v-model="note"
+      :placeholder="`Poznámka k ${title.toLowerCase()}`"
+    ></textarea>
   </div>
 </template>
 
@@ -29,9 +34,15 @@ const list = computed({
   set: v => { s.sections[props.type] = v; touch() }
 })
 
+const note = computed({
+  get: () => s.notes[props.type],
+  set: v => { s.notes[props.type] = v; touch() }
+})
+
 const opts = computed(() => OPTIONS[props.type] || [])
 function add() { list.value = [...list.value, { value: '', qty: 1 }] }
 function remove(i) { list.value = list.value.filter((_, idx) => idx !== i) }
 
 watch(list, touch, { deep: true })
+watch(note, touch)
 </script>
