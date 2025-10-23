@@ -1,6 +1,7 @@
 import { state } from '../store/formState'
 import { safePostOrQueue } from './queue'
 import { OPTIONS } from '../options'
+import { generatePdfSnapshot, generatePdfFileName } from './pdf'
 
 function plain(obj){ return JSON.parse(JSON.stringify(obj)) }
 
@@ -162,15 +163,41 @@ export async function sendToPA(){
   if (!csvEndpoint) throw new Error('VITE_PA_CSV_ENDPOINT není nastaveno')
 
   const { fileName, data } = buildPayload()
+
+  // Generate PDF snapshot
+  let pdfBase64 = ''
+  let pdfFileName = generatePdfFileName(data)
+
+  try {
+    const pdfResult = await generatePdfSnapshot()
+    pdfBase64 = pdfResult.pdfBase64
+  } catch (err) {
+    console.warn('PDF generation failed, continuing without PDF:', err)
+  }
+
+  // Přidej PDF do dat
+  if (pdfBase64) {
+    data.__pdfBase64 = pdfBase64
+    data.__pdfFileName = pdfFileName
+  }
+
   const jsonString = JSON.stringify(data)
   const jsonBase64 = btoa(unescape(encodeURIComponent(jsonString)))
 
-  // JSON upload
-  const jsonRes = await safePostOrQueue(jsonEndpoint, { jsonFileName: fileName, jsonContent: jsonBase64 }, { 'Content-Type':'application/json' })
+  // JSON upload (včetně PDF)
+  const jsonRes = await safePostOrQueue(jsonEndpoint, {
+    jsonFileName: fileName,
+    jsonContent: jsonBase64,
+    __pdfBase64: pdfBase64,
+    __pdfFileName: pdfFileName
+  }, { 'Content-Type':'application/json' })
 
   // CSV upload
   const { base64: csvBase64 } = generateCSV(data)
-  await safePostOrQueue(csvEndpoint, { csvFileName: fileName.replace(/\.json$/i, '.csv'), csvContent: csvBase64 }, { 'Content-Type':'application/json' })
+  await safePostOrQueue(csvEndpoint, {
+    csvFileName: fileName.replace(/\.json$/i, '.csv'),
+    csvContent: csvBase64
+  }, { 'Content-Type':'application/json' })
 
   return jsonRes
 }
