@@ -3,9 +3,9 @@
     <h2>DOHODY A JINÁ UJEDNÁNÍ</h2>
 
     <!-- 1) Místo pro montáž výčepní hlavy -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>1) Místo pro montáž výčepní hlavy</label>
-      <div>
+      <div class="dohoda-content">
         zásuvka 230V/16A/B pro trafo:
         <input type="radio" value="ano" v-model="s.dohody.hlava_zasuvka" /> ANO
         <input type="radio" value="ne" v-model="s.dohody.hlava_zasuvka" /> NE
@@ -29,9 +29,9 @@
     </div>
 
     <!-- 2) Prostor pro chladič -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>2) Prostor pro chladič</label>
-      <div>
+      <div class="dohoda-content">
         zásuvka 230V/16A/B:
         <input type="radio" value="ano" v-model="s.dohody.chl_zasuvka" /> ANO
         <input type="radio" value="ne" v-model="s.dohody.chl_zasuvka" /> NE
@@ -49,9 +49,9 @@
     </div>
 
     <!-- 3) Prostor pro sudy -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>3) Prostor pro sudy</label>
-      <div>
+      <div class="dohoda-content">
         přívod studené vody:
         <input type="radio" value="ano" v-model="s.dohody.sudy_voda" /> ANO
         <input type="radio" value="ne" v-model="s.dohody.sudy_voda" /> NE
@@ -78,9 +78,9 @@
     </div>
 
     <!-- 4) Stavební připravenost -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>4) Stavební připravenost</label>
-      <div>
+      <div class="dohoda-content">
         potrubní cesta – průrazy stěn, stropů, podlah:
         <input type="radio" value="ano" v-model="s.dohody.stav_prurazy" /> ANO
         <input type="radio" value="ne" v-model="s.dohody.stav_prurazy" /> NE
@@ -98,36 +98,40 @@
     </div>
 
     <!-- 5) Další specifikace, ujednání -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>5) Další specifikace, ujednání</label>
-      <textarea v-model="s.dohody.dohody_poznamka" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
+      <div class="dohoda-content">
+        <textarea v-model="s.dohody.dohody_poznamka" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
+      </div>
     </div>
 
     <!-- 6) Předány pokyny k přípravě instalace VT? -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>6) Předány pokyny k přípravě instalace VT?</label>
-      <div>
+      <div class="dohoda-content">
         <label><input type="radio" value="ano" v-model="s.dohody.pokyny_vt" /> ANO</label>
         <label><input type="radio" value="ne" v-model="s.dohody.pokyny_vt" /> NE</label>
       </div>
     </div>
 
     <!-- 7) Demontáž VT -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>7) Demontáž VT</label>
-      <div>
+      <div class="dohoda-content">
         <textarea v-model="s.demontaz_poznamky" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
       </div>
     </div>
 
     <!-- 8) KOFOLA -->
-    <div class="row">
+    <div class="dohoda-row">
       <label>8) KOFOLA</label>
-      <div class="opts" style="align-items:center;">
-        <label><input type="checkbox" value="kohout" v-model="s.kofola" /> VÝČEPNÍ KOHOUT</label>
-        <label><input type="checkbox" value="narazec" v-model="s.kofola" /> NARAŽEČ</label>
-        <label><input type="checkbox" value="plaketa" v-model="s.kofola" /> PLAKETA</label>
-        <label><input type="checkbox" value="myci_hlava" v-model="s.kofola" /> MYCÍ HLAVA</label>
+      <div class="dohoda-content">
+        <div class="opts">
+          <label><input type="checkbox" value="kohout" v-model="s.kofola" /> VÝČEPNÍ KOHOUT</label>
+          <label><input type="checkbox" value="narazec" v-model="s.kofola" /> NARAŽEČ</label>
+          <label><input type="checkbox" value="plaketa" v-model="s.kofola" /> PLAKETA</label>
+          <label><input type="checkbox" value="myci_hlava" v-model="s.kofola" /> MYCÍ HLAVA</label>
+        </div>
         <textarea v-model="s.kofola_poznamka" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
       </div>
     </div>

@@ -112,9 +112,13 @@
   /* Layout pro DynamicSection */
   .dynamic-row {
     display: grid;
-    grid-template-columns: 1fr 100px 40px;
+    grid-template-columns: 1fr 80px 40px;
     gap: 0.8rem;
-    align-items: center;
+    align-items: flex-start;
+  }
+
+  .qty-input {
+    max-width: 80px;
   }
   
   textarea.note-field {
@@ -234,4 +238,66 @@
     flex-direction: column;
     gap: 0.8rem;
   }
-  
+
+  /* Dohoda row - responzivní layout pro otázky */
+  .dohoda-row {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .dohoda-row:last-child {
+    border-bottom: none;
+  }
+
+  .dohoda-row > label:first-child {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .dohoda-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Responzivní breakpoints */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dohoda-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .dynamic-row {
+      grid-template-columns: 1fr 70px 40px;
+    }
+
+    .select-filter-wrap {
+      gap: 0.3rem;
+    }
+
+    .button-row {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    main {
+      padding: 1rem;
+    }
+
+    .section {
+      padding: 1rem;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+    }
+  }
